@@ -14,7 +14,7 @@ const EditTaskCard: React.FC<Props> = ({ content, handleDeleteCard, handleSave, 
     }
 
     return (
-        <div className="bg-slate-500 px-3 py-2 flex">
+        <div className="bg-slate-500 px-3 py-2 mt-2 rounded-md flex">
             <input type="text" className="text-black" value={text} onChange={Input} autoFocus={true} />
             <div className="ml-3">
                 <button className="bg-pink-600 rounded-lg px-5 mb-2" onClick={() => handleSave(id, text, NaN)}>Save</button>

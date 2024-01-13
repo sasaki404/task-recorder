@@ -51,6 +51,9 @@ const TaskCard: React.FC<Props> = ({ card, id, cardIndex, handleDeleteCard, hand
         } else if (pen && edit) {
             setPen(false);
         }
+        if (isTimerRunning) {
+            handleSave(id, card.content, time);
+        }
     }
 
     let Carded;
