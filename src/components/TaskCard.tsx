@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Draggable } from 'react-beautiful-dnd';
 import { Task } from "../type";
 import EditTaskCard from "./EditTaskCard";
+import Timer from "./Timer";
 
 type Props = {
     card: Task
@@ -9,13 +10,14 @@ type Props = {
     cardIndex: number
     time: number
     handleDeleteCard: (index: number) => void
-    handleSave: (index: number, content: string) => void
+    handleSave: (index: number, content: string, time: number) => void
 }
 
 const TaskCard: React.FC<Props> = ({ card, id, cardIndex, handleDeleteCard, handleSave }) => {
     const [edit, setEdit] = useState(false);
     const [pen, setPen] = useState(false);
-    const [isTimerPlaying, setIsTimerPlaying] = useState(false);
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
+    const [time, setTime] = useState(card.time);
     const toggleContainer = useRef<HTMLDivElement>(null) as React.MutableRefObject<HTMLDivElement>;
 
     useEffect(() => {
@@ -31,11 +33,14 @@ const TaskCard: React.FC<Props> = ({ card, id, cardIndex, handleDeleteCard, hand
     }
 
     const onPlay = () => {
-        setIsTimerPlaying(!isTimerPlaying);
+        if (isTimerRunning) {
+            onSave(id, card.content, time);
+        }
+        setIsTimerRunning(!isTimerRunning);
     }
 
-    const onSave = (id: number, text: string) => {
-        handleSave(id, text);
+    const onSave = (id: number, text: string, time: number) => {
+        handleSave(id, text, time);
         setEdit(!edit);
     }
 
@@ -67,8 +72,11 @@ const TaskCard: React.FC<Props> = ({ card, id, cardIndex, handleDeleteCard, hand
                         <div className="bg-slate-500  rounded-md p-3 my-2 flex"
                         >
                             {card.content}
+                            {(isTimerRunning || time != 0)
+                                &&
+                                <Timer isRun={isTimerRunning} time={time} startDate={new Date()} setTime={setTime} />}
                             <div className="flex ml-auto">
-                                {!isTimerPlaying ? (
+                                {!isTimerRunning ? (
                                     <div>
                                         <i className="fas fa-play" onClick={onPlay}></i>
                                     </div>

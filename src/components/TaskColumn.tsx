@@ -65,11 +65,13 @@ const TaskColumn: React.FC<Props> = ({ taskColumn, taskColumnIndex, tasks }) => 
     setTaskList(newtasks);
   }
 
-  const handleSave = (id: number, text: string) => {
+  const handleSave = (id: number, text: string, time: number = -1) => {
     const tasks = JSON.parse(JSON.stringify(taskList));
     const index = taskList.findIndex(i => i.id === id);
     tasks[index].content = text;
-    // TODO: timeも
+    if (time != -1 && !Number.isNaN(time)) {
+      tasks[index].time = time;
+    }
     setTaskList(tasks);
   }
 
