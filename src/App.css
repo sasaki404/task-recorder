@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Poppins&family=Roboto&display=swap');
+
+body {
+  background-color: rgb(226, 234, 255);
+  height: 100vh;
+  color: #e4e4e4;
+  line-height: 1.5;
+  font-family: 'Poppins', sans-serif;
+}
+
+header {
+  background: linear-gradient(16deg,
+      rgb(3, 55, 104) 0%,
+      rgba(51, 45, 54, 1) 96%);
+}
+
+.task-column {
+  width: 350px;
+  background: rgb(73, 73, 73);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px #ccc;
+  height: fit-content;
+  position: relative;
+}
+
+.fa-pen {
+  height: 20px;
+}
