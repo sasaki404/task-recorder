@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Draggable } from 'react-beautiful-dnd';
 import { Task } from "../type";
 import EditTaskCard from "./EditTaskCard";
@@ -7,23 +7,45 @@ type Props = {
     card: Task
     id: number
     cardIndex: number
+    time: number
     handleDeleteCard: (index: number) => void
     handleSave: (index: number, content: string) => void
 }
 
 const TaskCard: React.FC<Props> = ({ card, id, cardIndex, handleDeleteCard, handleSave }) => {
-    const [hidden, setHidden] = useState(false)
-    const [edit, setEdit] = useState(false)
-    const toggleContainer = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>
+    const [edit, setEdit] = useState(false);
+    const [pen, setPen] = useState(false);
+    const [isTimerPlaying, setIsTimerPlaying] = useState(false);
+    const toggleContainer = useRef<HTMLDivElement>(null) as React.MutableRefObject<HTMLDivElement>;
+
+    useEffect(() => {
+        window.addEventListener('click', onClick);
+        return () => {
+            window.removeEventListener('click', onClick);
+        }
+    });
 
     const onPen = () => {
         setEdit(!edit);
-        setHidden(false);
+        setPen(true);
+    }
+
+    const onPlay = () => {
+        setIsTimerPlaying(!isTimerPlaying);
     }
 
     const onSave = (id: number, text: string) => {
         handleSave(id, text);
         setEdit(!edit);
+    }
+
+    const onClick = (e: any) => {
+        console.log(pen);
+        if (!pen && !toggleContainer.current.contains(e.target)) {
+            setEdit(false);
+        } else if (pen && edit) {
+            setPen(false);
+        }
     }
 
     let Carded;
@@ -43,15 +65,22 @@ const TaskCard: React.FC<Props> = ({ card, id, cardIndex, handleDeleteCard, hand
                         {...provided.dragHandleProps}
                     >
                         <div className="bg-slate-500  rounded-md p-3 my-2 flex"
-                            onMouseEnter={() => setHidden(true)}
-                            onMouseLeave={() => setHidden(false)}
                         >
                             {card.content}
-                            {hidden &&
-                                <div className="pen ml-auto" >
+                            <div className="flex ml-auto">
+                                {!isTimerPlaying ? (
+                                    <div>
+                                        <i className="fas fa-play" onClick={onPlay}></i>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <i className="fas fa-pause" onClick={onPlay}></i>
+                                    </div>
+                                )}
+                                <div className="ml-3" ref={toggleContainer}>
                                     <i className="fas fa-pen" onClick={onPen}></i>
                                 </div>
-                            }
+                            </div>
                         </div>
                     </div>
                 )}

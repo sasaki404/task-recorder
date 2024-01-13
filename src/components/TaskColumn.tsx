@@ -32,7 +32,7 @@ const TaskColumn: React.FC<Props> = ({ taskColumn, taskColumnIndex, tasks }) => 
   const onClickOutsideKebabuHandler = (e: any) => {
     if (isOpenMenu && !kebabuContainer.current.contains(e.target)) {
       // ケバブメニューの外をクリックしたとき
-      setIsOpenMenu(false);
+      //setIsOpenMenu(false);
     }
   }
 
@@ -119,6 +119,7 @@ const TaskColumn: React.FC<Props> = ({ taskColumn, taskColumnIndex, tasks }) => 
                       card={card}
                       id={card.id}
                       cardIndex={index}
+                      time={card.time}
                       key={card.id}
                       handleDeleteCard={handleDeleteTaskCard}
                       handleSave={handleSave}
